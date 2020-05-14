@@ -70,3 +70,6 @@ class Board:
         for position in self.get_tile_positions():
             empty_adjacent_positions = empty_adjacent_positions.union(self.get_empty_adjacent_positions(*position))
         return empty_adjacent_positions
+    
+    def is_position_taken(self, x, y):
+        return (x, y) in self.get_tile_positions()
