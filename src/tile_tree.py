@@ -1,73 +1,53 @@
 from tile_position import TilePosition
-import constants
+from constants import MAX_DEPTH, DIRECTIONS, opposite
 
 
 class TileTree:
 
-    def __init__(self, position: TilePosition, parent_position: TilePosition = None):
+    def __init__(self, position: TilePosition, parent_position: TilePosition, tree_by_direction):
         self.__position = position
         self.__parent_position = parent_position
-        self.__tree_by_direction = dict()
+        self.__tree_by_direction = tree_by_direction
 
-    def get_position(self):
+    def __get_position(self):
         return self.__position
 
-    def get_child_tree_by_direction(self):
+    def __get_child_tree_by_direction(self):
         return self.__tree_by_direction
 
-    def get_child(self, direction):
-        return self.__tree_by_direction[direction]
-
-    def number_of_directions(self):
-        return len(self.get_child_tree_by_direction())
-
     def __repr__(self):
-        return f"{self.get_position()}:" + str(self.get_accessible_directions())
+        return f"{self.__get_position()}:" + str(self.__get_child_tree_by_direction())
 
-    def __get_tile_position(self):
-        return self.get_position()
-
-    def __add_direction(self, direction, tree):
-        self.__tree_by_direction[direction] = tree
-
-    def __get_parent(self):
-        return self.__parent_position
-
-    def get_accessible_position_tree(self, board, max_depth: int):
-        if max_depth == 0:
-            return
-        from_tile = board.get_tile_at(self.__get_tile_position())
-        for direction in constants.directions:
-            to_tile = board.get_tile(direction, self.__get_tile_position())
-            to_pos = self.__get_tile_position().get_position(direction)
+    @classmethod
+    def get_accessible_position_tree(cls, board, root: TilePosition, max_depth: int = MAX_DEPTH, depth: int = 0, parent=None):
+        if depth == max_depth:
+            return cls(root, parent, dict())
+        from_tile = board.get_tile_at(root)
+        tree_by_direction = dict()
+        for direction in DIRECTIONS:
+            to_tile = board.get_tile(direction, root)
+            to_pos = root.get_position(direction)
             if from_tile.is_accessible_from(direction) \
                     and to_tile is not None \
-                    and to_pos != self.__get_parent() \
-                    and to_tile.is_accessible_from(constants.opposite(direction)):
-                child_node = TileTree(to_pos, self.get_position())
-                child_node.get_accessible_position_tree(board, max_depth-1)
-                self.__add_direction(direction, child_node)
+                    and to_pos != parent \
+                    and to_tile.is_accessible_from(opposite(direction)):
+                child_node = cls.get_accessible_position_tree(board, to_pos, max_depth, depth+1, root)
+                tree_by_direction[direction] = child_node
+        return cls(root, None, tree_by_direction)
 
-    def can_access(self, pos: TilePosition):
-        if self.get_position() == pos:
-            return True
-        return any([child_tree.can_access(pos) for child_tree in self.get_child_tree_by_direction().values()])
-
-    def get_paths_to(self, target):
+    def get_tile_paths_to(self, target):
         return self.__get_paths_to_target(target)
 
     def __get_paths_to_target(self, target: TilePosition, path_to_here=[], completed_paths=[], depth=0):
-        if self.get_position() == target:
+        if self.__get_position() == target:
             completed_paths.append(path_to_here)
 
-        for direction, child_tree in self.get_child_tree_by_direction().items():
-            if child_tree.can_access(target):
-                child_tree.__get_paths_to_target(target, path_to_here + [direction], completed_paths, depth+1)
+        for direction, child_tree in self.__get_child_tree_by_direction().items():
+            child_tree.__get_paths_to_target(target, path_to_here + [direction], completed_paths, depth+1)
 
         if depth == 0:
             return completed_paths
 
-    def calculate_distance_between_spots(self, from_spot, to_position, to_spot):
-        pass
+
 
 

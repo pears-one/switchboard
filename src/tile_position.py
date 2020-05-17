@@ -1,4 +1,4 @@
-from constants import left, right, above, below
+from constants import LEFT, RIGHT, ABOVE, BELOW
 
 
 class TilePosition:
@@ -30,7 +30,7 @@ class TilePosition:
         return other is not None and self.__x == other.__x and self.__y == other.__y
 
     def get_position(self, direction):
-        check = {above: self.above, below: self.below, left: self.left, right: self.right}
+        check = {ABOVE: self.above, BELOW: self.below, LEFT: self.left, RIGHT: self.right}
         return check[direction]()
 
     def __str__(self):
