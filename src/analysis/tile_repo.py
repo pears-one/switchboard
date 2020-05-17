@@ -1,7 +1,6 @@
 import json
-from tiles import Tile
-from tile_id import TileID
-from spots import LeftSpot, RightSpot, BottomSpot, MiddleSpot, TopSpot
+from tiles.tiles import Tile
+from tiles.tile_id import TileID
 
 
 class TileRepo:

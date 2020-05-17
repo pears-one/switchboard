@@ -1,7 +1,7 @@
 import unittest
 from tiles import Tile, RotatedTile
-from spots import LeftSpot, RightSpot, MiddleSpot, BottomSpot, TopSpot
-from constants import LEFT, RIGHT, BELOW, ABOVE
+from tiles.spots import LeftSpot, RightSpot, MiddleSpot
+from config.constants import LEFT, RIGHT, BELOW, ABOVE
 
 
 class TestTile(unittest.TestCase):

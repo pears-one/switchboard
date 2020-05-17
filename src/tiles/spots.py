@@ -1,4 +1,4 @@
-from constants import ABOVE, BELOW, RIGHT, LEFT
+from config.constants import ABOVE, BELOW, RIGHT, LEFT
 
 
 class Spot:

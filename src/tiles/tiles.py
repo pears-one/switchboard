@@ -1,5 +1,5 @@
-from spots import LeftSpot, RightSpot, MiddleSpot, BottomSpot, TopSpot
-from constants import DIRECTIONS
+from tiles.spots import LeftSpot, RightSpot, MiddleSpot, BottomSpot, TopSpot
+from config.constants import DIRECTIONS
 
 
 class Tile:

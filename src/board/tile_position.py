@@ -1,4 +1,4 @@
-from constants import LEFT, RIGHT, ABOVE, BELOW
+from config.constants import LEFT, RIGHT, ABOVE, BELOW
 
 
 class TilePosition:

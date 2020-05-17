@@ -1,5 +1,5 @@
-from tile_position import TilePosition
-from constants import MAX_DEPTH, DIRECTIONS, opposite
+from board.tile_position import TilePosition
+from config.constants import MAX_DEPTH, DIRECTIONS, opposite
 
 
 class TileTree:

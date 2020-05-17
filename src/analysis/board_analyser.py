@@ -1,6 +1,6 @@
-from tile_tree import TileTree
-from spots import Spot
-from constants import opposite
+from analysis.tile_tree import TileTree
+from tiles.spots import Spot
+from config.constants import opposite
 
 
 class BoardAnalyser:

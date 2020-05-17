@@ -1,10 +1,10 @@
 import json
 from exceptions import MoveError
-from tile_position import TilePosition
+from board.tile_position import TilePosition
 from copy import deepcopy
-from tile_repo import TileRepo
-from tile_id import TileID
-from tiles import RotatedTile
+from analysis.tile_repo import TileRepo
+from tiles.tile_id import TileID
+from tiles.tiles import RotatedTile
 
 
 class Board:
