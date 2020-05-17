@@ -27,7 +27,7 @@ class TilePosition:
         yield self.__y
 
     def __eq__(self, other):
-        return self.__x == other.__x and self.__y == other.__y
+        return other is not None and self.__x == other.__x and self.__y == other.__y
 
     def get_position(self, direction):
         check = {above: self.above, below: self.below, left: self.left, right: self.right}
