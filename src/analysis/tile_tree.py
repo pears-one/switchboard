@@ -22,20 +22,15 @@ class TileTree:
     def get_accessible_position_tree(cls, board, root: TilePosition, max_depth: int = MAX_DEPTH, depth: int = 0, parent=None):
         if depth == max_depth:
             return cls(root, parent, dict())
-        from_tile = board.get_tile_at(root)
         tree_by_direction = dict()
         for direction in DIRECTIONS:
-            to_tile = board.get_tile(direction, root)
-            to_pos = root.get_position(direction)
-            if from_tile.is_accessible_from(direction) \
-                    and to_tile is not None \
-                    and to_pos != parent \
-                    and to_tile.is_accessible_from(opposite(direction)):
+            to_pos = root.get_position_in_direction(direction)
+            if to_pos != parent and board.is_connection_from(root, direction):
                 child_node = cls.get_accessible_position_tree(board, to_pos, max_depth, depth+1, root)
                 tree_by_direction[direction] = child_node
         return cls(root, None, tree_by_direction)
 
-    def get_tile_paths_to(self, target):
+    def get_tile_paths_to(self, target: TilePosition):
         return self.__get_paths_to_target(target)
 
     def __get_paths_to_target(self, target: TilePosition, path_to_here=[], completed_paths=[], depth=0):
@@ -47,6 +42,9 @@ class TileTree:
 
         if depth == 0:
             return completed_paths
+
+    def get_valid_directions(self):
+        return list(self.__tree_by_direction.keys())
 
 
 

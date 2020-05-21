@@ -5,6 +5,8 @@ from copy import deepcopy
 from analysis.tile_repo import TileRepo
 from tiles.tile_id import TileID
 from tiles.tiles import RotatedTile
+from config.constants import opposite
+from moves.tile_move import TileMove
 
 
 class Board:
@@ -21,7 +23,7 @@ class Board:
             pos = TilePosition(*tile_config[0:2])
             tile_id = TileID(*tile_config[2:4])
             spot_list = tile_repo.get_tile(tile_id).get_spot_list()
-            tile_dictionary[tuple(pos)] = RotatedTile(spot_list, tile_config[4])
+            tile_dictionary[tuple(pos)] = RotatedTile(tile_id, spot_list, tile_config[4])
         return Board(tile_dictionary)
 
     def get_tile_at(self, pos: TilePosition) -> RotatedTile:
@@ -33,18 +35,24 @@ class Board:
     def get_tile_positions(self):
         return [TilePosition.from_tuple(key) for key in self.__tile_dictionary.keys()]
 
-    def move_tile(self, from_pos, to_pos, rotation):
-        if from_pos not in self.get_tile_positions() or to_pos in self.get_tile_positions():
-            raise MoveError
-
+    def move_tile(self, tile_move: TileMove):
         new_tile_dict = deepcopy(self.__tile_dictionary)
-        tile_to_move = self.get_tile_at(from_pos)
-        new_tile_dict[tuple(to_pos)] = RotatedTile(tile_to_move, rotation)
-        del new_tile_dict[tuple(from_pos)]
-
+        tile_to_move = self.get_tile_at(tile_move.get_from_pos())
+        del new_tile_dict[tuple(tile_move.get_from_pos())]
+        new_tile_dict[tuple(tile_move.get_to_pos())] = RotatedTile.from_tile(tile_to_move, tile_move.get_rotation())
         return Board(new_tile_dict)
 
     def get_tile(self, direction, pos: TilePosition) -> RotatedTile:
-        pos = pos.get_position(direction)
+        pos = pos.get_position_in_direction(direction)
         return self.get_tile_at(pos)
+
+    def is_connection_from(self, from_position: TilePosition, direction):
+        to_position = from_position.get_position_in_direction(direction)
+        from_tile, to_tile = self.get_tile_at(from_position), self.get_tile_at(to_position)
+        return from_tile.is_accessible_from(direction) \
+            and to_tile is not None \
+            and to_tile.is_accessible_from(opposite(direction))
+
+    def get_tile_count(self):
+        return len(self.get_tile_positions())
 

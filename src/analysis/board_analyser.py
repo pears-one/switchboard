@@ -1,16 +1,22 @@
 from analysis.tile_tree import TileTree
-from tiles.spots import Spot
+from spots.spots import Spot
 from config.constants import opposite
+from moves.piece_move import PieceMove
+from moves.tile_move import TileMove
+from board.board import Board
+from dice.dice_roll import DiceRoll
+from tiles.tile_id import TileID
 
 
 class BoardAnalyser:
-    def __init__(self, board):
+    def __init__(self, board: Board):
         self.__board = board
 
-    def calculate_distance_between_spots(self, source_tile_position, from_spot, target_tile_position, to_spot):
-        tree = TileTree.get_accessible_position_tree(self.__board, source_tile_position)
-        direction_paths = tree.get_tile_paths_to(target_tile_position)
-        return [self.get_path_distance(path, from_spot, to_spot) for path in direction_paths]
+    def calculate_move_distance(self, move: PieceMove):
+        source_position, target_position = move.get_from_position(), move.get_to_position()
+        tree = TileTree.get_accessible_position_tree(self.__board, source_position.get_tile_position())
+        direction_paths = tree.get_tile_paths_to(target_position.get_tile_position())
+        return [self.get_path_distance(path, source_position.get_spot(), target_position.get_spot()) for path in direction_paths]
 
     @staticmethod
     def get_path_distance(direction_path, from_spot: Spot, to_spot: Spot):
@@ -19,3 +25,18 @@ class BoardAnalyser:
         distance_to_second_tile = from_spot.distance_to_tile(direction_path[0])
         distance_from_penultimate_tile = to_spot.distance_to_tile(opposite(direction_path[-1]))
         return (len(direction_path) - 1) * 3 + distance_from_penultimate_tile + distance_to_second_tile - 1
+
+    def piece_move_is_valid(self, move: PieceMove, dice_roll: DiceRoll):
+        return dice_roll.get_dice_total() in self.calculate_move_distance(move)
+
+    def tile_move_is_valid(self, tile_move: TileMove, dice_roll: DiceRoll):
+        valid_tile_ids = [TileID(dice_roll.get_dice_values()[i], dice_roll.get_dice_values()[(i+1) % 2]) for i in range(2)]
+        if self.__board.get_tile_at(tile_move.get_from_pos()).get_tile_id() not in valid_tile_ids:
+            return False
+        new_board = self.__board.move_tile(tile_move)
+        if new_board.get_tile_count() != self.__board.get_tile_count():
+            return False
+        tree = TileTree.get_accessible_position_tree(new_board, tile_move.get_to_pos(), 1)
+        if len(tree.get_valid_directions()) == 0:
+            return False
+        return True

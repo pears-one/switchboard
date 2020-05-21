@@ -1,5 +1,5 @@
 from board.tile_position import TilePosition
-from tiles.spots import Spot
+from spots.spots import Spot
 
 
 class Piece:

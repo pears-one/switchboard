@@ -29,7 +29,7 @@ class TilePosition:
     def __eq__(self, other):
         return other is not None and self.__x == other.__x and self.__y == other.__y
 
-    def get_position(self, direction):
+    def get_position_in_direction(self, direction):
         check = {ABOVE: self.above, BELOW: self.below, LEFT: self.left, RIGHT: self.right}
         return check[direction]()
 

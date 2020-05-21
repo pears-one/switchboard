@@ -1,12 +1,10 @@
-from config.constants import ABOVE, BELOW, RIGHT, LEFT
+from config.constants import ABOVE, BELOW, RIGHT, LEFT, TOP_SPOT, LEFT_SPOT, RIGHT_SPOT, BOTTOM_SPOT, MIDDLE_SPOT
 
 
-class Spot:
-    def __init__(self, colour: int = None):
-        self.__colour = colour
+class SpotPosition:
 
-    def get_colour(self):
-        return self.__colour
+    def __init__(self):
+        pass
 
     @staticmethod
     def adjacent_tile_direction():
@@ -18,13 +16,13 @@ class Spot:
         return 3
 
     @staticmethod
-    def is_edge_spot():
+    def is_on_edge():
         return None
 
     def distance_to(self, other):
         if self == other:
             return 0
-        if self.is_edge_spot() and other.is_edge_spot():
+        if self.is_on_edge() and other.is_on_edge():
             return 2
         return 1
 
@@ -32,55 +30,68 @@ class Spot:
         return type(self) == type(other)
 
 
-class MiddleSpot(Spot):
+class Middle(SpotPosition):
 
     def distance_to_tile(self, tile_direction):
         return 2
 
     @staticmethod
-    def is_edge_spot():
+    def is_on_edge():
         return False
 
 
-class BottomSpot(Spot):
+class Bottom(SpotPosition):
 
     @staticmethod
     def adjacent_tile_direction():
         return BELOW
 
     @staticmethod
-    def is_edge_spot():
+    def is_on_edge():
         return True
 
 
-class LeftSpot(Spot):
+class Left(SpotPosition):
 
     @staticmethod
     def adjacent_tile_direction():
         return LEFT
 
     @staticmethod
-    def is_edge_spot():
+    def is_on_edge():
         return True
 
 
-class TopSpot(Spot):
+class Top(SpotPosition):
 
     @staticmethod
     def adjacent_tile_direction():
         return ABOVE
 
     @staticmethod
-    def is_edge_spot():
+    def is_on_edge():
         return True
 
 
-class RightSpot(Spot):
+class Right(SpotPosition):
 
     @staticmethod
     def adjacent_tile_direction():
         return RIGHT
 
     @staticmethod
-    def is_edge_spot():
+    def is_on_edge():
         return True
+
+
+class SpotPositionFactory:
+    @staticmethod
+    def get_by_id(spot_id: int):
+        spots_by_id = {
+            TOP_SPOT: Top,
+            LEFT_SPOT: Left,
+            MIDDLE_SPOT: Middle,
+            RIGHT_SPOT: Right,
+            BOTTOM_SPOT: Bottom
+        }
+        return spots_by_id[spot_id]

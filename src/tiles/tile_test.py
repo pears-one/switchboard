@@ -1,12 +1,13 @@
 import unittest
 from tiles import Tile, RotatedTile
-from tiles.spots import LeftSpot, RightSpot, MiddleSpot
+from spots.spots import Spot
+from spots.spot_positions import Left, Right, Middle
 from config.constants import LEFT, RIGHT, BELOW, ABOVE
 
 
 class TestTile(unittest.TestCase):
     def setUp(self):
-        spots = [LeftSpot(1), RightSpot(1), MiddleSpot(1)]
+        spots = [Spot(Left(), 1), Spot(Middle(), 1), Spot(Right(), 1)]
         self.tile = Tile(spots)
 
     def test_is_accessible_from(self):
@@ -18,7 +19,7 @@ class TestTile(unittest.TestCase):
 
 class TestRotatedTile(unittest.TestCase):
     def setUp(self):
-        spots = [LeftSpot(1), RightSpot(1), MiddleSpot(1)]
+        spots = [Spot(Left(), 1), Spot(Middle(), 1), Spot(Right(), 1)]
         self.one_rotation_tile = RotatedTile(spots, 1)
 
     def test_is_accessible_from(self):

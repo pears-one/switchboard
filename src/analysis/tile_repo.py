@@ -15,9 +15,10 @@ class TileRepo:
         with open(filename) as config:
             tile_list = json.load(config)["tiles"]
         tile_dictionary = dict()
-        for y, row in enumerate(tile_list):
-            for x, tile in enumerate(row):
-                tile_dictionary[(x+1, y+1)] = Tile.from_config_list(tile)
+        for tile in tile_list:
+            x = tile[0]
+            y = tile[1]
+            tile_dictionary[(x, y)] = Tile.from_config_list(tile)
         return cls(tile_dictionary)
 
 

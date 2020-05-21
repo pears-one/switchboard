@@ -15,3 +15,6 @@ class Player:
 
     def has_another_go(self):
         return self.__piece.is_on(GREEN)
+
+    def get_position(self):
+        return self.__piece.get_piece_position()
