@@ -1,9 +1,9 @@
 from board.tile_position import TilePosition
-from spots.spots import Spot
+from spots.spot_positions import SpotPosition
 
 
 class Piece:
-    def __init__(self, piece_colour, tile_position: TilePosition, spot: Spot):
+    def __init__(self, piece_colour, tile_position: TilePosition, spot: SpotPosition):
         self.__piece_colour = piece_colour
         self.__tile_position = tile_position
         self.__spot = spot
