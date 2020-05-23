@@ -15,6 +15,9 @@ LEFT_SPOT = 1
 MIDDLE_SPOT = 2
 RIGHT_SPOT = 3
 BOTTOM_SPOT = 4
+ROLL = 'roll'
+MOVE_TILE = 'tile'
+MOVE_PIECE = 'move_piece'
 
 
 

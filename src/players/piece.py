@@ -1,12 +1,10 @@
-from board.tile_position import TilePosition
-from spots.spot_positions import SpotPosition
+from players.piece_position import PiecePosition
 
 
 class Piece:
-    def __init__(self, piece_colour, tile_position: TilePosition, spot: SpotPosition):
+    def __init__(self, piece_colour, position: PiecePosition):
         self.__piece_colour = piece_colour
-        self.__tile_position = tile_position
-        self.__spot = spot
+        self.__piece_position = position
 
     def get_piece_colour(self):
         return self.__piece_colour
@@ -15,7 +13,7 @@ class Piece:
         return self.__piece_colour
 
     def get_piece_position(self):
-        return self.__tile_position, self.__spot
+        return self.__piece_position
 
-    def is_on(self, colour):
-        return self.__spot.get_colour() == colour
+    def move(self, new_position: PiecePosition):
+        self.__piece_position = new_position

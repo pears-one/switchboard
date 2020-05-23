@@ -6,11 +6,15 @@ import json
 
 
 class Player:
-    def __init__(self, name: str, cookie: str, piece: Piece, missing_next_turn):
+    def __init__(self, name: str, cookie: str, piece: Piece, missing_next_turn: bool, has_another_go: bool):
         self.__piece = piece
         self.__missing_next_turn = missing_next_turn
+        self.__has_another_go = has_another_go
         self.__name = name
         self.__cookie = cookie
+
+    def move_piece(self, new_position):
+        self.__piece.move(new_position)
 
     def get_cookie(self):
         return self.__cookie
@@ -24,8 +28,11 @@ class Player:
     def is_missing_next_turn(self):
         return self.__missing_next_turn
 
+    def toggle_has_another_go(self):
+        self.__missing_next_turn = not self.__missing_next_turn
+
     def has_another_go(self):
-        return self.__piece.is_on(GREEN)
+        return self.__missing_next_turn
 
     def get_position(self):
         return self.__piece.get_piece_position()

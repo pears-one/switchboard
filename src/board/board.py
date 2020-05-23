@@ -1,5 +1,4 @@
 import json
-from exceptions import MoveError
 from board.tile_position import TilePosition
 from copy import deepcopy
 from analysis.tile_repo import TileRepo
