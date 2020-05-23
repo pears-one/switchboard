@@ -1,3 +1,6 @@
+from tiles.tile_id import TileID
+from spots.spot_positions import SpotPositionFactory
+
 ABOVE = "above"
 BELOW = "below"
 LEFT = "left"
@@ -12,6 +15,7 @@ LEFT_SPOT = 1
 MIDDLE_SPOT = 2
 RIGHT_SPOT = 3
 BOTTOM_SPOT = 4
+
 
 
 def opposite(direction):

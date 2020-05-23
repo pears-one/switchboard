@@ -11,7 +11,7 @@ def main():
     board = Board.from_config('config/board_config.json', tile_repo)
     game = Game(board, players, 0)
     facade = Facade(game)
-    facade.run(host="127.0.0.1", port="5000")
+    facade.run(host='0.0.0.0')
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ from tiles.tile_id import TileID
 from tiles.tiles import RotatedTile
 from config.constants import opposite
 from moves.tile_move import TileMove
+from players.piece_position import PiecePosition
 
 
 class Board:
@@ -55,4 +56,9 @@ class Board:
 
     def get_tile_count(self):
         return len(self.get_tile_positions())
+
+    def get_spot_at_piece_position(self, position: PiecePosition):
+        tile = self.get_tile_at(position.get_tile_position())
+        return tile.get_spot_at_position(position.get_spot_position())
+
 

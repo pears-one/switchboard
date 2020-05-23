@@ -6,8 +6,15 @@ class Spot:
         self.__colour = colour
         self.__position = position
 
+    @staticmethod
+    def is_winning_spot(self):
+        return False
+
     def get_colour(self):
         return self.__colour
+
+    def get_position(self):
+        return self.__position
 
     def adjacent_tile_direction(self):
         return self.__position.adjacent_tile_direction()
@@ -29,3 +36,14 @@ class Spot:
 
     def __eq__(self, other):
         return type(self) == type(other)
+
+
+class WinningSpot(Spot):
+    def __init__(self, spot_position: SpotPosition, colour: int):
+        super().__init__(spot_position, colour)
+
+    @staticmethod
+    def is_winning_spot(self):
+        return True
+
+

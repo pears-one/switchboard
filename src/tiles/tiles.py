@@ -1,11 +1,13 @@
-from spots.spots import Spot
-from spots.spot_positions import SpotPositionFactory
+from spots.spots import Spot, WinningSpot
+from spots.spot_positions import SpotPositionFactory, SpotPosition
 from config.constants import DIRECTIONS
 from tiles.tile_id import TileID
+from config.constants import TOP_SPOT
+from spots.spot_positions import Top, Left, Middle, Right, Bottom
 
 
 class Tile:
-    def __init__(self, tile_id, spot_list):
+    def __init__(self, tile_id: TileID, spot_list: list):
         self.__spot_list = spot_list
         self.__tile_id = tile_id
 
@@ -18,6 +20,11 @@ class Tile:
     def get_tile_id(self):
         return self.__tile_id
 
+    def get_spot_at_position(self, spot_position: SpotPosition):
+        for spot in self.__spot_list:
+            if spot.get_position() == spot_position:
+                return spot
+
     @classmethod
     def from_config_list(cls, config: list):
         spots = []
@@ -26,7 +33,10 @@ class Tile:
             if colour == 0:
                 continue
             spot_position = SpotPositionFactory.get_by_id(position)
-            spots.append(Spot(spot_position, colour))
+            if tile_id == TileID(4, 3) and position == TOP_SPOT:
+                spots.append(WinningSpot(spot_position, colour))
+            else:
+                spots.append(Spot(spot_position, colour))
         return cls(tile_id, spots)
 
 
@@ -46,3 +56,14 @@ class RotatedTile(Tile):
     @classmethod
     def from_tile(cls, tile: Tile, rotation: int):
         return cls(tile.get_tile_id(), tile.get_spot_list(), rotation)
+
+    @staticmethod
+    def __get_spot_position_by_rotated_spot_position(position_on_rotated_tile):
+        if position_on_rotated_tile == Middle():
+            return Middle()
+        edge_spots = [Top(), Left(), Bottom(), Right()]
+        return edge_spots[edge_spots.index(position_on_rotated_tile)]
+
+    def get_spot_at_position(self, rotated_position: SpotPosition):
+        spot_position = self.__get_spot_position_by_rotated_spot_position(rotated_position)
+        return super().get_spot_at_position(spot_position)

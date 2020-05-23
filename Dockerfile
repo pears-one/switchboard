@@ -1,7 +1,12 @@
 FROM python
 MAINTAINER evanfpearson
 WORKDIR /game
-RUN ["pip", "install", "flask"]
+
+COPY requirements.txt requirements.txt
+RUN ["pip", "install", "-r", "requirements.txt"]
+
+
 COPY src /game/src
 WORKDIR src
+
 CMD ["python3", "main.py"]

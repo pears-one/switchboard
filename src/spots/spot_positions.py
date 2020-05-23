@@ -94,4 +94,4 @@ class SpotPositionFactory:
             RIGHT_SPOT: Right,
             BOTTOM_SPOT: Bottom
         }
-        return spots_by_id[spot_id]
+        return spots_by_id[spot_id]()

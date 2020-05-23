@@ -6,6 +6,7 @@ from moves.tile_move import TileMove
 from board.board import Board
 from dice.dice_roll import DiceRoll
 from tiles.tile_id import TileID
+from players.piece_position import PiecePosition
 
 
 class BoardAnalyser:
@@ -26,10 +27,10 @@ class BoardAnalyser:
         distance_from_penultimate_tile = to_spot.distance_to_tile(opposite(direction_path[-1]))
         return (len(direction_path) - 1) * 3 + distance_from_penultimate_tile + distance_to_second_tile - 1
 
-    def piece_move_is_valid(self, move: PieceMove, dice_roll: DiceRoll):
+    def is_piece_move_valid(self, move: PieceMove, dice_roll: DiceRoll):
         return dice_roll.get_dice_total() in self.calculate_move_distance(move)
 
-    def tile_move_is_valid(self, tile_move: TileMove, dice_roll: DiceRoll):
+    def is_tile_move_valid(self, tile_move: TileMove, dice_roll: DiceRoll):
         valid_tile_ids = [TileID(dice_roll.get_dice_values()[i], dice_roll.get_dice_values()[(i+1) % 2]) for i in range(2)]
         if self.__board.get_tile_at(tile_move.get_from_pos()).get_tile_id() not in valid_tile_ids:
             return False
@@ -40,3 +41,9 @@ class BoardAnalyser:
         if len(tree.get_valid_directions()) == 0:
             return False
         return True
+
+    def is_winning_position(self, piece_position: PiecePosition):
+        spot = self.__board.get_spot_at_piece_position(piece_position)
+        return spot.is_winning_spot()
+
+
