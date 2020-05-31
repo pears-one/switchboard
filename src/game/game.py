@@ -35,11 +35,10 @@ class Game:
     def get_current_player(self) -> Player:
         return self.__players[self.__player_to_move]
 
-    def move_tile(self, from_tile_position, to_tile_position, rotation):
+    def move_tile(self, tile_move):
         analyser = BoardAnalyser(self.__board)
-        move = TileMove(from_tile_position, to_tile_position, rotation)
-        if analyser.is_tile_move_valid(move, self.__dice_roll):
-            self.__board = self.__board.move_tile(move)
+        if analyser.is_tile_move_valid(tile_move, self.__dice_roll) and self.__turn_phase == MOVE_TILE:
+            self.__board = self.__board.move_tile(tile_move)
             self.__set_phase(ROLL)
             self.__next_player()
             return True
@@ -53,8 +52,11 @@ class Game:
         return False
 
     def roll_dice(self):
-        self.__dice_roll.roll_dice()
-        self.__set_phase(MOVE_PIECE)
+        if self.__turn_phase == ROLL:
+            self.__dice_roll.roll_dice()
+            self.__set_phase(MOVE_PIECE)
+            return True
+        return False
 
     def __spot_colour_of_current_player(self):
         player_position = self.get_current_player().get_position()
@@ -65,7 +67,7 @@ class Game:
         analyser = BoardAnalyser(self.__board)
         player = self.get_current_player()
         move = PieceMove(player.get_position(), to_piece_position)
-        if analyser.is_piece_move_valid(move, self.__dice_roll):
+        if analyser.is_piece_move_valid(move, self.__dice_roll) and self.__turn_phase == MOVE_PIECE:
             player.move_piece(to_piece_position)
             if self.__spot_colour_of_current_player() == GREEN:
                 player.toggle_has_another_go()

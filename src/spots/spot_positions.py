@@ -3,8 +3,8 @@ from config.constants import ABOVE, BELOW, RIGHT, LEFT, TOP_SPOT, LEFT_SPOT, RIG
 
 class SpotPosition:
 
-    def __init__(self):
-        pass
+    def __init__(self, spot_id):
+        self.__id = spot_id
 
     @staticmethod
     def adjacent_tile_direction():
@@ -31,6 +31,9 @@ class SpotPosition:
 
     def __str__(self):
         return type(self).__name__
+
+    def get_id(self):
+        return self.__id
 
 
 class Middle(SpotPosition):

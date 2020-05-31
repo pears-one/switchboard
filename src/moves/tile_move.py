@@ -15,3 +15,11 @@ class TileMove:
 
     def get_from_pos(self):
         return self.__from_pos
+
+    @classmethod
+    def unmarshal(cls, move_dict):
+        return cls(
+            TilePosition.unmarshal(move_dict["from"]),
+            TilePosition.unmarshal(move_dict["to"]),
+            move_dict["rotation"]
+        )

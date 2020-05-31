@@ -25,3 +25,12 @@ class GameManager:
 
     def get_data(self, group_code):
         return self.__games[group_code].marshal()
+
+    def roll(self, group_code):
+        return self.__games[group_code].roll_dice()
+
+    def move_piece(self, group_code):
+        return
+
+    def move_tile(self, group_code, tile_move):
+        return self.__games[group_code].move_tile(tile_move)

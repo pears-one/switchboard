@@ -44,3 +44,7 @@ class TilePosition:
             "x": self.__x,
             "y": self.__y
         }
+
+    @classmethod
+    def unmarshal(cls, pos_dict):
+        return cls(pos_dict["x"], pos_dict["y"])

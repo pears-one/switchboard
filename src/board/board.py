@@ -61,4 +61,11 @@ class Board:
         return tile.get_spot_at_position(position.get_spot_position())
 
     def marshal(self):
-        return {str(key): tile.marshal() for key, tile in self.__tile_dictionary.items()}
+        def key_to_dict(key):
+            return {
+                "tile_position": {
+                    "x": key[0],
+                    "y": key[1]
+                }
+            }
+        return [{**key_to_dict(key), **tile.marshal()} for key, tile in self.__tile_dictionary.items()]

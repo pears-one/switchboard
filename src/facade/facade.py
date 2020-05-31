@@ -1,6 +1,8 @@
 from flask import Flask, request, make_response
 from players.new_player import NewPlayer
 from service.service import Service
+from moves.tile_move import TileMove
+from players.piece_position import PiecePosition
 
 
 class Facade:
@@ -13,6 +15,7 @@ class Facade:
         self.app.add_url_rule('/game/<group_code>', None, self.manage_game, methods=["GET", "POST"])
         self.app.add_url_rule('/game/<group_code>/tile-move', None, self.move_tile, methods=["POST"])
         self.app.add_url_rule('/game/<group_code>/piece-move', None, self.move_piece, methods=["POST"])
+        self.app.add_url_rule('/game/<group_code>/roll-dice', None, self.roll, methods=["POST"])
 
     @staticmethod
     def health_check():
@@ -20,21 +23,32 @@ class Facade:
 
     def move_tile(self, group_code):
         response = make_response()
-        if self.__service.get_current_player(group_code) != request.cookies["player"]:
+        tile_move = TileMove.unmarshal(request.get_json())
+        if self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
             response.status_code = 401  # Not this player's turn
-            return response
-        if self.__service.move_tile(group_code):
+        elif self.__service.move_tile(group_code, tile_move):
             response.status_code = 200  # Move Successful
-            return response
-        response.status_code = 400
-        return response  # invalid move
+        else:
+            response.status_code = 400  # invalid move
+        return response
+
+    def roll(self, group_code):
+        response = make_response()
+        if self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
+            response.status_code = 401  # Not this player's turn
+        elif self.__service.roll(group_code):
+            response.status_code = 200  # Roll successful
+        else:
+            response.status_code = 400  # Not this move phase
+        return response
 
     def move_piece(self, group_code):
         response = make_response()
-        if self.__service.get_current_player(group_code) != request.cookies["player"]:
+        to_position = PiecePosition.unmarshal(request.get_json())
+        if self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
             response.status_code = 401  # Not this player's turn
             return response
-        if self.__service.move_piece(group_code):
+        if self.__service.move_piece(group_code, to_position):
             response.status_code = 200  # Move Successful
             return response
         response.status_code = 400
