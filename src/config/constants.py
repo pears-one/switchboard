@@ -1,6 +1,3 @@
-from tiles.tile_id import TileID
-from spots.spot_positions import SpotPositionFactory
-
 ABOVE = "above"
 BELOW = "below"
 LEFT = "left"
@@ -18,7 +15,9 @@ BOTTOM_SPOT = 4
 ROLL = 'roll'
 MOVE_TILE = 'tile'
 MOVE_PIECE = 'move_piece'
-
+PLAYER_CONFIG_PATH = 'config/players/players.json'
+TILE_CONFIG_PATH = 'config/tile_config.json'
+BOARD_CONFIG_PATH = 'config/board_config.json'
 
 
 def opposite(direction):

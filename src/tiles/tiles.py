@@ -67,3 +67,10 @@ class RotatedTile(Tile):
     def get_spot_at_position(self, rotated_position: SpotPosition):
         spot_position = self.__get_spot_position_by_rotated_spot_position(rotated_position)
         return super().get_spot_at_position(spot_position)
+
+    def marshal(self):
+        return {
+            "tile_id": self.get_tile_id().marshal(),
+            "spots": [spot.marshal() for spot in self.get_spot_list()],
+            "rotation": self.get_rotation()
+        }

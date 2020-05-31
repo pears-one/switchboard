@@ -12,3 +12,6 @@ class Die:
 
     def get_value(self):
         return self.__value
+
+    def __int__(self):
+        return self.__value

@@ -1,12 +1,8 @@
 from players.piece import Piece
-from config.constants import GREEN
-from board.tile_position import TilePosition
-from spots.spot_positions import SpotPositionFactory
-import json
 
 
 class Player:
-    def __init__(self, name: str, cookie: str, piece: Piece, missing_next_turn: bool, has_another_go: bool):
+    def __init__(self, name: str, cookie: str, piece: Piece, missing_next_turn: bool = False, has_another_go: bool = False):
         self.__piece = piece
         self.__missing_next_turn = missing_next_turn
         self.__has_another_go = has_another_go
@@ -40,19 +36,21 @@ class Player:
     def __str__(self):
         return "Hey! I'm " + self.get_name()
 
+    def marshal(self):
+        return {
+            "name": self.__name,
+            "cookie": self.__cookie,
+            "piece": self.__piece.marshal(),
+            "missing_next_turn": self.__missing_next_turn,
+            "has_another_go": self.has_another_go()
+        }
 
-def get_players_from_config(filename):
-    with open(filename) as file:
-        player_json = json.load(file)
-        player_list = player_json["players"]
 
+def initialise_players(new_player_list):
     player_objects = []
-    for colour, player in enumerate(player_list):
-        pos = player["position"]
-        tile_position = TilePosition(pos[0], pos[1])
-        spot_position = SpotPositionFactory.get_by_id(pos[2])
-        piece = Piece(colour, tile_position, spot_position)
-        player_objects.append(Player(player["name"], player["cookie"], piece, False))
+    for colour, player in enumerate(new_player_list):
+        piece = Piece(colour)
+        player_objects.append(Player(player.get_name(), player.get_cookie(), piece))
 
     return player_objects
 

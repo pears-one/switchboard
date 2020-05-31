@@ -4,7 +4,7 @@ from config.constants import opposite
 from moves.piece_move import PieceMove
 from moves.tile_move import TileMove
 from board.board import Board
-from dice.dice_roll import DiceRoll
+from dice.roll import DiceRoll
 from tiles.tile_id import TileID
 from players.piece_position import PiecePosition
 

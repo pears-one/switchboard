@@ -38,3 +38,9 @@ class TilePosition:
 
     def __repr__(self):
         return "Pos(" + str(self.__x) + ", " + str(self.__y) + ")"
+
+    def marshal(self):
+        return {
+            "x": self.__x,
+            "y": self.__y
+        }

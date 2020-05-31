@@ -13,5 +13,11 @@ class TileID:
         yield self.get_x()
         yield self.get_y()
 
+    def marshal(self):
+        return {
+            "x": self.get_x(),
+            "y": self.get_y()
+        }
+
     def __eq__(self, other):
         return type(self) == type(other) and self.get_x() == other.get_x() and self.get_y() == other.get_y()

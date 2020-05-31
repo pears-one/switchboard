@@ -60,4 +60,5 @@ class Board:
         tile = self.get_tile_at(position.get_tile_position())
         return tile.get_spot_at_position(position.get_spot_position())
 
-
+    def marshal(self):
+        return {str(key): tile.marshal() for key, tile in self.__tile_dictionary.items()}

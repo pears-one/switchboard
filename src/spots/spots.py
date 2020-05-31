@@ -37,6 +37,12 @@ class Spot:
     def __eq__(self, other):
         return type(self) == type(other)
 
+    def marshal(self):
+        return {
+            "position": str(self.get_position()),
+            "colour": self.__colour
+        }
+
 
 class WinningSpot(Spot):
     def __init__(self, spot_position: SpotPosition, colour: int):
