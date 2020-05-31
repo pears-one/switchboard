@@ -29,8 +29,11 @@ class GameManager:
     def roll(self, group_code):
         return self.__games[group_code].roll_dice()
 
-    def move_piece(self, group_code):
-        return
+    def move_piece(self, group_code, to_position):
+        return self.__games[group_code].move_piece(to_position)
 
     def move_tile(self, group_code, tile_move):
         return self.__games[group_code].move_tile(tile_move)
+
+    def game_exists(self, group_code):
+        return group_code in self.__games.keys()

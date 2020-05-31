@@ -24,7 +24,9 @@ class Facade:
     def move_tile(self, group_code):
         response = make_response()
         tile_move = TileMove.unmarshal(request.get_json())
-        if self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
+        if not self.__service.game_exists(group_code):
+            response.status_code = 404  # Game doesn't exist
+        elif self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
             response.status_code = 401  # Not this player's turn
         elif self.__service.move_tile(group_code, tile_move):
             response.status_code = 200  # Move Successful
@@ -34,7 +36,9 @@ class Facade:
 
     def roll(self, group_code):
         response = make_response()
-        if self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
+        if not self.__service.game_exists(group_code):
+            response.status_code = 404  # Game doesn't exist
+        elif self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
             response.status_code = 401  # Not this player's turn
         elif self.__service.roll(group_code):
             response.status_code = 200  # Roll successful
@@ -45,14 +49,15 @@ class Facade:
     def move_piece(self, group_code):
         response = make_response()
         to_position = PiecePosition.unmarshal(request.get_json())
-        if self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
+        if not self.__service.game_exists(group_code):
+            response.status_code = 404  # Game doesn't exist
+        elif self.__service.get_current_player_cookie(group_code) != request.cookies["player"]:
             response.status_code = 401  # Not this player's turn
-            return response
-        if self.__service.move_piece(group_code, to_position):
+        elif self.__service.move_piece(group_code, to_position):
             response.status_code = 200  # Move Successful
-            return response
-        response.status_code = 400
-        return response  # invalid move
+        else:
+            response.status_code = 400  # invalid move
+        return response
 
     def new_lobby(self):
         request_body = request.get_json()
@@ -70,7 +75,10 @@ class Facade:
             response.status_code = 200
             return response
         else:
-            response = make_response({group_code: self.__service.get_game_data(group_code)})
+            if not self.__service.game_exists(group_code):
+                response = make_response()
+                response.status_code = 404  # Game doesn't exist
+            response = make_response(self.__service.get_game_data(group_code))
             response.status_code = 200
             return response
 

@@ -59,9 +59,9 @@ class RotatedTile(Tile):
 
     @staticmethod
     def __get_spot_position_by_rotated_spot_position(position_on_rotated_tile):
-        if position_on_rotated_tile == Middle():
-            return Middle()
-        edge_spots = [Top(), Left(), Bottom(), Right()]
+        if position_on_rotated_tile == Middle(2):
+            return Middle(2)
+        edge_spots = [Top(0), Left(1), Bottom(4), Right(3)]
         return edge_spots[edge_spots.index(position_on_rotated_tile)]
 
     def get_spot_at_position(self, rotated_position: SpotPosition):

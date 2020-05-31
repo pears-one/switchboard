@@ -1,5 +1,5 @@
 from analysis.tile_tree import TileTree
-from spots.spots import Spot
+from spots.spot_positions import SpotPosition
 from config.constants import opposite
 from moves.piece_move import PieceMove
 from moves.tile_move import TileMove
@@ -16,11 +16,12 @@ class BoardAnalyser:
     def calculate_move_distance(self, move: PieceMove):
         source_position, target_position = move.get_from_position(), move.get_to_position()
         tree = TileTree.get_accessible_position_tree(self.__board, source_position.get_tile_position())
+        print(tree)
         direction_paths = tree.get_tile_paths_to(target_position.get_tile_position())
-        return [self.get_path_distance(path, source_position.get_spot(), target_position.get_spot()) for path in direction_paths]
+        return [self.get_path_distance(path, source_position.get_spot_position(), target_position.get_spot_position()) for path in direction_paths]
 
     @staticmethod
-    def get_path_distance(direction_path, from_spot: Spot, to_spot: Spot):
+    def get_path_distance(direction_path, from_spot: SpotPosition, to_spot: SpotPosition):
         if len(direction_path) == 0:
             return from_spot.distance_to(to_spot)
         distance_to_second_tile = from_spot.distance_to_tile(direction_path[0])

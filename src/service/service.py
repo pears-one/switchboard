@@ -34,4 +34,10 @@ class Service:
         return self.__game_manager.roll(group_code)
 
     def move_tile(self, group_code, tile_move):
-        return self.__game_manager.move_tile()
+        return self.__game_manager.move_tile(group_code, tile_move)
+
+    def game_exists(self, group_code):
+        return self.__game_manager.game_exists(group_code)
+
+    def move_piece(self, group_code, to_position):
+        return self.__game_manager.move_piece(group_code, to_position)

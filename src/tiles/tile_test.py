@@ -1,14 +1,16 @@
 import unittest
-from tiles import Tile, RotatedTile
+from tiles.tiles import Tile, RotatedTile
+from tiles.tile_id import TileID
 from spots.spots import Spot
-from spots.spot_positions import Left, Right, Middle
-from config.constants import LEFT, RIGHT, BELOW, ABOVE
+from spots.spot_positions import SpotPositionFactory
+from config.constants import LEFT, RIGHT, BELOW, ABOVE, LEFT_SPOT, MIDDLE_SPOT, RIGHT_SPOT
 
 
 class TestTile(unittest.TestCase):
     def setUp(self):
-        spots = [Spot(Left(), 1), Spot(Middle(), 1), Spot(Right(), 1)]
-        self.tile = Tile(spots)
+        fac = SpotPositionFactory()
+        spots = [Spot(fac.get_by_id(LEFT_SPOT), 1), Spot(fac.get_by_id(MIDDLE_SPOT), 1), Spot(fac.get_by_id(RIGHT_SPOT), 1)]
+        self.tile = Tile(TileID(1, 1), spots)
 
     def test_is_accessible_from(self):
         self.assertTrue(self.tile.is_accessible_from(LEFT))
@@ -19,8 +21,9 @@ class TestTile(unittest.TestCase):
 
 class TestRotatedTile(unittest.TestCase):
     def setUp(self):
-        spots = [Spot(Left(), 1), Spot(Middle(), 1), Spot(Right(), 1)]
-        self.one_rotation_tile = RotatedTile(spots, 1)
+        fac = SpotPositionFactory()
+        spots = [Spot(fac.get_by_id(LEFT_SPOT), 1), Spot(fac.get_by_id(MIDDLE_SPOT), 1), Spot(fac.get_by_id(RIGHT_SPOT), 1)]
+        self.one_rotation_tile = RotatedTile(TileID(1, 1), spots, 1)
 
     def test_is_accessible_from(self):
         self.assertFalse(self.one_rotation_tile.is_accessible_from(LEFT))

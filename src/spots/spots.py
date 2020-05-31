@@ -39,7 +39,7 @@ class Spot:
 
     def marshal(self):
         return {
-            "position": str(self.get_position()),
+            "position": self.get_position().get_id(),
             "colour": self.__colour
         }
 

@@ -29,9 +29,6 @@ class SpotPosition:
     def __eq__(self, other):
         return type(self) == type(other)
 
-    def __str__(self):
-        return type(self).__name__
-
     def get_id(self):
         return self.__id
 
@@ -100,4 +97,4 @@ class SpotPositionFactory:
             RIGHT_SPOT: Right,
             BOTTOM_SPOT: Bottom
         }
-        return spots_by_id[spot_id]()
+        return spots_by_id[spot_id](spot_id)
