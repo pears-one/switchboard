@@ -1,4 +1,3 @@
-import time
 from utils.functions import random_string
 from players.new_player import NewPlayer
 from lobby.lobby import Lobby
@@ -25,4 +24,5 @@ class LobbyManager:
     def pop_lobby_by_code(self, group_code):
         return self.__lobbies_by_code.pop(group_code)
 
-
+    def exists(self, group_code):
+        return group_code in self.__lobbies_by_code

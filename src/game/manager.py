@@ -35,5 +35,5 @@ class GameManager:
     def move_tile(self, group_code, tile_move):
         return self.__games[group_code].move_tile(tile_move)
 
-    def game_exists(self, group_code):
-        return group_code in self.__games.keys()
+    def exists(self, group_code):
+        return group_code in self.__games

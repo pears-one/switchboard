@@ -1,6 +1,5 @@
 from board.board import Board
 from analysis.board_analyser import BoardAnalyser
-from moves.tile_move import TileMove
 from dice.roll import DiceRoll
 from moves.piece_move import PieceMove
 from config.constants import MOVE_PIECE, MOVE_TILE, ROLL, GREEN, RED
@@ -46,10 +45,7 @@ class Game:
 
     def is_over(self):
         analyser = BoardAnalyser(self.__board)
-        for position in [player.get_position() for player in self.__players]:
-            if analyser.is_winning_position(position):
-                return True
-        return False
+        return any([analyser.is_winning_position(player.get_position()) for player in self.__players])
 
     def roll_dice(self):
         if self.__turn_phase == ROLL:
@@ -77,6 +73,9 @@ class Game:
             return True
         return False
 
+    def get_phase(self):
+        return self.__turn_phase
+
     def remove_player(self, player_cookie):
         self.__players = [player for player in self.__players if player.get_cookie() != player_cookie]
 
@@ -85,5 +84,7 @@ class Game:
             "board": self.__board.marshal(),
             "players": [player.marshal() for player in self.__players],
             "player_to_move": self.__player_to_move,
-            "dice_roll": list(self.__dice_roll)
+            "phase": self.get_phase(),
+            "dice_roll": list(self.__dice_roll),
+            "is_over": self.is_over()
         }

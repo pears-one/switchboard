@@ -6,7 +6,6 @@ class Spot:
         self.__colour = colour
         self.__position = position
 
-    @staticmethod
     def is_winning_spot(self):
         return False
 
@@ -48,8 +47,5 @@ class WinningSpot(Spot):
     def __init__(self, spot_position: SpotPosition, colour: int):
         super().__init__(spot_position, colour)
 
-    @staticmethod
     def is_winning_spot(self):
         return True
-
-
